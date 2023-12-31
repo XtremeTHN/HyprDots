@@ -1,0 +1,56 @@
+@import '../../pywal/colors.scss';
+@import '../../common/box.scss';
+
+.quicksettings {
+  @include box();
+  min-width: 300px;
+}
+
+.quicksettings-uptime {
+  font-size: x-small;
+}
+
+.quicksettings-circular-button {
+  &:hover {
+    border-color: $foreground;
+  }
+  
+  border: 1px solid transparent;
+  border-radius: 40px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  
+  transition: all 0.5s;
+}
+
+.quicksettings-button {
+  min-height: 40px;
+  border-radius: 16px;
+}
+
+.quicksettings-wifi-box {
+  padding: 15px;
+
+}
+
+.quicksettings-wifi-item {
+  background-color: transparent;
+}
+
+.quicksettings-wifiscanner-top {
+  border-bottom: 1px solid $foreground;
+  padding-bottom: 10px;
+}
+
+.quicksettings-button-right {
+  background-color: transparent;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-left: 1px solid $foreground;
+}
+
+.quicksettings-window {
+  background-color: transparent;
+}

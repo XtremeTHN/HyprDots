@@ -1,0 +1,12 @@
+@import 'pywal/colors.scss';
+@import 'windows/topbar/index.scss';
+@import 'windows/quicksettings/index.scss';
+@import 'common/box.scss';
+
+* {
+  color: $foreground;
+  font-family: "Chillax";
+  font-weight: 500;
+  // font-size: small;
+}
+

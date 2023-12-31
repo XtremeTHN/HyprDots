@@ -1,0 +1,27 @@
+@import '../../common/box.scss';
+@import '../../pywal/colors.scss';
+
+.topbar-current-player {
+  font-size: xx-small;
+}
+
+.topbar-main-box {
+  @include box()
+}
+
+.topbar-workspaces-button-circle {
+  &.active {
+    background-color: $color5;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+  background-color: $color1;
+  min-width: 5px;
+  border-radius: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 4px 1px 4px 1px;
+  
+  transition: all 0.3s;
+}
+

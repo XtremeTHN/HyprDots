@@ -1,0 +1,85 @@
+.topbar-current-player {
+  font-size: xx-small;
+}
+
+.topbar-main-box {
+  border-radius: 6px;
+  padding: 10px;
+  background-color: #000304;
+}
+
+.topbar-workspaces-button-circle {
+  background-color: #407270;
+  min-width: 5px;
+  border-radius: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 4px 1px 4px 1px;
+  transition: all 0.3s;
+}
+.topbar-workspaces-button-circle.active {
+  background-color: #5DC5AB;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.quicksettings {
+  border-radius: 6px;
+  padding: 10px;
+  background-color: #000304;
+  min-width: 300px;
+}
+
+.quicksettings-uptime {
+  font-size: x-small;
+}
+
+.quicksettings-circular-button {
+  border: 1px solid transparent;
+  border-radius: 40px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  transition: all 0.5s;
+}
+.quicksettings-circular-button:hover {
+  border-color: #bfc0c0;
+}
+
+.quicksettings-button {
+  min-height: 40px;
+  border-radius: 16px;
+}
+
+.quicksettings-wifi-box {
+  padding: 15px;
+}
+
+.quicksettings-wifi-item {
+  background-color: transparent;
+}
+
+.quicksettings-wifiscanner-top {
+  border-bottom: 1px solid #bfc0c0;
+  padding-bottom: 10px;
+}
+
+.quicksettings-button-right {
+  background-color: transparent;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-left: 1px solid #bfc0c0;
+}
+
+.quicksettings-window {
+  background-color: transparent;
+}
+
+* {
+  color: #bfc0c0;
+  font-family: "Chillax";
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=style.css.map */
