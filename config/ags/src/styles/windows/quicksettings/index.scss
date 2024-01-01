@@ -4,6 +4,7 @@
 .quicksettings {
   @include box();
   min-width: 300px;
+  border-radius: 16px;
 }
 
 .quicksettings-uptime {
@@ -30,14 +31,15 @@
 
 .quicksettings-wifi-box {
   padding: 15px;
-
+  border: 1px solid $color7;
+  border-radius: 16px;
 }
 
 .quicksettings-wifi-item {
   background-color: transparent;
 }
 
-.quicksettings-wifiscanner-top {
+.quicksettings-section-top {
   border-bottom: 1px solid $foreground;
   padding-bottom: 10px;
 }

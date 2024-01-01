@@ -3,6 +3,7 @@ import { User, Uptime } from "./variables.js";
 import ControlCenter from "./controlcenter.js";
 import { execAsync } from "resource:///com/github/Aylur/ags/utils.js";
 import { WifiScanner } from "./internet.js";
+import { BluetoothScanner } from "./bluetooth.js";
 
 /**
  * @param {String} string
@@ -48,6 +49,7 @@ const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) =>
     overlays: ovr_child
   })
 }
+
 
 const Title = (string) => {
   return string.at(0)?.toUpperCase() + string.slice(1)
@@ -105,43 +107,72 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
   children: [
     Widget.Box({
       vertical: true,
+      spacing: 10,
       children: [
         QuickSettingsButton({
           stack,
           icon: "network-wireless-symbolic",
           label: "Internet", target: "WifiScanner"
+        }),
+        QuickSettingsButton({
+          stack,
+          icon: "bluetooth-active-symbolic",
+          label: "Bluetooth", target: "BluetoothScanner"
         })
       ]
     })
   ]
 })
 
+const QuickSettingsSectionTop = (stack) => Widget.Box({
+  spacing: 10,
+  class_name: "quicksettings-section-top",
+  children: [
+    Widget.Button({
+      class_name: "quicksettings-circular-button",
+      css: "padding-right: 12px;",
+      hexpand: false, vexpand: false,
+      child: Widget.Icon({
+        icon: "go-previous-symbolic",
+        size: 16,
+      }),
+      on_primary_click: () => {
+        stack.shown = "Main"
+      }
+    }),
+    Widget.Label({
+      label: "Return",
+      css: "font-size: large",
+    })
+  ]
+})
+
+export const QuickSettingsStackMenu = (stack, name, child) => Widget.Revealer({
+    reveal_child: false,
+    transition: "slide_up",
+    transition_duration: 350,
+    child,
+    connections: [
+      [stack, self => {
+        let show = stack.shown === name
+        self.reveal_child = show
+      }, 'notify::shown']
+    ]
+  })
+
 const QuickSettingsWifiScanner = (stack) => Widget.Box({
   vertical: true,
   spacing: 20,
   children: [
-    Widget.Box({
-      spacing: 10,
-      class_name: "quicksettings-wifiscanner-top",
-      children: [
-        Widget.Button({
-          class_name: "quicksettings-circular-button",
-          css: "padding-right: 12px;",
-          child: Widget.Icon({
-            icon: "go-previous-symbolic",
-            size: 16,
-          }),
-          on_primary_click: () => {
-            stack.shown = "Main"
-          }
-        }),
-        Widget.Label({
-          label: "Return",
-          css: "font-size: large",
-        })
-      ]
-    }),
+    QuickSettingsSectionTop(stack),
     WifiScanner(stack) 
+  ]
+})
+
+const QuickSettingsBluetoothScanner = (stack) => Widget.Box({
+  children: [
+    QuickSettingsSectionTop(stack),
+    BluetoothScanner(stack)
   ]
 })
 
@@ -161,7 +192,8 @@ export default () => {
           setup: self => {
             self.items = [
               ["Main", QuickSettingsMainBox(self)],
-              ["WifiScanner", QuickSettingsWifiScanner(self)] 
+              ["WifiScanner", QuickSettingsWifiScanner(self)],
+              ["BluetoothScanner", QuickSettingsBluetoothScanner(self)]
             ]
           }
         })

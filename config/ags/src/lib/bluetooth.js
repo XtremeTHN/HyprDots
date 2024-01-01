@@ -1,6 +1,7 @@
 import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import Variable from "resource:///com/github/Aylur/ags/variable.js";
+import { QuickSettingsStackMenu } from "./quicksettings.js";
 
 const _get_ico = () => Bluetooth.enabled === true ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic" 
 const _bluetooth_ico = Variable(_get_ico())
@@ -16,3 +17,29 @@ export const BluetoothIcon = () => Widget.Icon({
     }]
   ]
 })
+
+const BluetoothDevice = (dev) => Widget.Box({
+  children: [
+    Widget.Icon({
+      binds: [
+        ["icon", dev, "icon-name"]
+      ]
+    }),
+    Widget.Label({
+      label: dev.alias,
+      xalgin: 0,
+      hexpand: true,
+    }),
+    Widget.Label(dev.paired ? "Connected" : "")
+  ]
+})
+
+export const BluetoothScanner = (stack) => QuickSettingsStackMenu(stack, "BluetoothScanner", Widget.Box({
+  class_name: "quicksettings-bluetooth-box",
+  vertical: true,
+  connections: [
+    [Bluetooth, self => {
+      self.children = Bluetooth.devices.map(BluetoothDevice)
+    }]
+  ]
+}))

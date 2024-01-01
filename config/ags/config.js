@@ -3,6 +3,10 @@ import TopBarWindow from './src/lib/topbar.js';
 import QuickSettingsWindow from './src/lib/quicksettings.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
+import Bluetooth from 'resource:///com/github/Aylur/ags/service/bluetooth.js';
+
+globalThis['Bluetooth'] = Bluetooth
+
 const css_path = `${App.configDir}/src/styles/style.css`
 
 const CompileScss = () => {
