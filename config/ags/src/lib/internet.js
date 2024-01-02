@@ -10,9 +10,17 @@ Network.connect("changed", (self) => {
   _network_ico.value = self[self.primary].icon_name
 })
 
-const _wifi = Variable(Network.wifi.access_points)
+const GetAccessPoints = (self=Network) => {
+try {
+  return self.wifi.access_points
+} catch (error) {
+  console.error("No wifi adapter connected")
+  return [{}]
+}
+}
+const _wifi = Variable(GetAccessPoints())
 Network.connect("changed", (nt) => {
-  _wifi.setValue(nt.wifi.access_points)
+  _wifi.setValue(GetAccessPoints(nt))
 })
 
 export const NetworkIcon = () => Widget.Icon({

@@ -192,7 +192,6 @@ export default () => {
           setup: self => {
             self.items = [
               ["Main", QuickSettingsMainBox(self)],
-              ["WifiScanner", QuickSettingsWifiScanner(self)],
               ["BluetoothScanner", QuickSettingsBluetoothScanner(self)]
             ]
           }
