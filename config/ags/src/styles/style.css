@@ -5,11 +5,11 @@
 .topbar-main-box {
   border-radius: 6px;
   padding: 10px;
-  background-color: #000304;
+  background-color: #000003;
 }
 
 .topbar-workspaces-button-circle {
-  background-color: #407270;
+  background-color: #15358C;
   min-width: 5px;
   border-radius: 10px;
   padding-left: 3px;
@@ -18,7 +18,7 @@
   transition: all 0.3s;
 }
 .topbar-workspaces-button-circle.active {
-  background-color: #5DC5AB;
+  background-color: #1A4BA6;
   padding-left: 7px;
   padding-right: 7px;
 }
@@ -26,7 +26,7 @@
 .quicksettings {
   border-radius: 6px;
   padding: 10px;
-  background-color: #000304;
+  background-color: #000003;
   min-width: 300px;
   border-radius: 16px;
 }
@@ -43,7 +43,7 @@
   transition: all 0.5s;
 }
 .quicksettings-circular-button:hover {
-  border-color: #bfc0c0;
+  border-color: #bfbfc0;
 }
 
 .quicksettings-button {
@@ -53,7 +53,7 @@
 
 .quicksettings-wifi-box {
   padding: 15px;
-  border: 1px solid #bfc0c0;
+  border: 1px solid #bfbfc0;
   border-radius: 16px;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .quicksettings-section-top {
-  border-bottom: 1px solid #bfc0c0;
+  border-bottom: 1px solid #bfbfc0;
   padding-bottom: 10px;
 }
 
@@ -72,7 +72,7 @@
   border-bottom-right-radius: 16px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  border-left: 1px solid #bfc0c0;
+  border-left: 1px solid #bfbfc0;
 }
 
 .quicksettings-window {
@@ -80,7 +80,7 @@
 }
 
 * {
-  color: #bfc0c0;
+  color: #bfbfc0;
   font-family: "Chillax";
   font-weight: 500;
 }

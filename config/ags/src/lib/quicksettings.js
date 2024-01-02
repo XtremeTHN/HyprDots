@@ -170,6 +170,7 @@ const QuickSettingsWifiScanner = (stack) => Widget.Box({
 })
 
 const QuickSettingsBluetoothScanner = (stack) => Widget.Box({
+  vertical: true,
   children: [
     QuickSettingsSectionTop(stack),
     BluetoothScanner(stack)

@@ -2,7 +2,12 @@ import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import Variable from "resource:///com/github/Aylur/ags/variable.js";
 import { QuickSettingsStackMenu } from "./quicksettings.js";
-import { lookUpIcon } from "resource:///com/github/Aylur/ags/utils.js"; 
+import { lookUpIcon, subprocess } from "resource:///com/github/Aylur/ags/utils.js"; 
+
+// Start scanning
+const blue_proc = subprocess("bluetooth_scan", (out) => {
+  return
+}, undefined, undefined)
 
 const _get_ico = () => Bluetooth.enabled === true ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic" 
 const _bluetooth_ico = Variable(_get_ico())
@@ -19,6 +24,7 @@ export const BluetoothIcon = () => Widget.Icon({
   ]
 })
 
+/** @param {import('types/service/bluetooth.js').BluetoothDevice} */
 const BluetoothDevice = (dev) => Widget.Box({
   children: [
     Widget.Icon({
@@ -36,7 +42,21 @@ const BluetoothDevice = (dev) => Widget.Box({
       xalign: 0,
       hexpand: true,
     }),
-    Widget.Label(dev.paired ? "Connected" : "")
+    Widget.Box({
+      vertical: true,
+      children: [
+        Widget.Switch({
+          hpack: 'end',
+          hexpand: false,
+          active: dev.bind("connected"),
+          visible: dev.bind('connecting').transform(p=> !p),
+          setup: self => self.on('notify::active', () => {
+            dev.setConnection(self.active)
+          })
+        }),
+ 
+      ],
+    })
   ]
 })
 
@@ -46,6 +66,6 @@ export const BluetoothScanner = (stack) => QuickSettingsStackMenu(stack, "Blueto
   connections: [
     [Bluetooth, self => {
       self.children = Bluetooth.devices.map(BluetoothDevice)
-    }]
+    }, "notify::devices"]
   ]
 }))
