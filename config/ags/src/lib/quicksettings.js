@@ -171,6 +171,7 @@ const QuickSettingsWifiScanner = (stack) => Widget.Box({
 
 const QuickSettingsBluetoothScanner = (stack) => Widget.Box({
   vertical: true,
+  spacing: 20,
   children: [
     QuickSettingsSectionTop(stack),
     BluetoothScanner(stack)
@@ -193,6 +194,7 @@ export default () => {
           setup: self => {
             self.items = [
               ["Main", QuickSettingsMainBox(self)],
+              ["WifiScanner", QuickSettingsWifiScanner(self)],
               ["BluetoothScanner", QuickSettingsBluetoothScanner(self)]
             ]
           }

@@ -15,6 +15,41 @@ Bluetooth.connect("notify::enable", (_) => {
   _bluetooth_ico.value = _get_ico()
 })
 
+const QuickSettingsBluetoothScannerPlaceholder = () => {
+  let ico = Widget.Icon({
+    size: 32,
+  })
+
+  let label = Widget.Label()
+
+  return Widget.Box({
+    vertical: true,
+    spacing: 0,
+    children: [
+      ico,
+      label
+    ],
+    connections: [
+      [Bluetooth, self => {
+        if (Bluetooth.enabled) {
+          if (Bluetooth.devices.length) {
+            self.visible = true
+            label.label = "No bluetooth devices nearby"
+            ico.icon = "bluetooth-disabled-symbolic"
+          } else {
+            self.visible = false
+          }
+        } else {
+          self.visible = true
+          label.label = "Bluetooth disabled"
+          ico.icon = "bluetooth-disabled-symbolic"
+        }
+      }]
+    ]
+  })
+}
+
+
 export const BluetoothIcon = () => Widget.Icon({
   size: 16,
   connections: [
@@ -24,7 +59,7 @@ export const BluetoothIcon = () => Widget.Icon({
   ]
 })
 
-/** @param {import('types/service/bluetooth.js').BluetoothDevice} */
+/** @param {import('types/service/bluetooth.js').BluetoothDevice} dev */
 const BluetoothDevice = (dev) => Widget.Box({
   children: [
     Widget.Icon({
@@ -61,11 +96,18 @@ const BluetoothDevice = (dev) => Widget.Box({
 })
 
 export const BluetoothScanner = (stack) => QuickSettingsStackMenu(stack, "BluetoothScanner", Widget.Box({
-  class_name: "quicksettings-bluetooth-box",
+  class_name: "quicksettings-scanners-box",
   vertical: true,
-  connections: [
-    [Bluetooth, self => {
-      self.children = Bluetooth.devices.map(BluetoothDevice)
-    }, "notify::devices"]
+  children: [
+    QuickSettingsBluetoothScannerPlaceholder(),
+    Widget.Box({
+      spacing: 5,
+      connections: [
+        [Bluetooth, self => {
+          self.children = Bluetooth.devices.map(BluetoothDevice)
+        }, "notify::devices"]
+      ]    
+    })
   ]
+  
 }))
