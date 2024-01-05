@@ -1,7 +1,9 @@
 @import 'pywal/colors.scss';
 @import 'windows/topbar/index.scss';
 @import 'windows/quicksettings/index.scss';
+@import 'windows/notifications/index.scss';
 @import 'common/box.scss';
+
 
 * {
   color: $foreground;

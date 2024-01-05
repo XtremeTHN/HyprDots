@@ -181,6 +181,7 @@ const QuickSettingsBluetoothScanner = (stack) => Widget.Box({
 export default () => {
    return Widget.Window({
     name: "quicksettings",
+    visible: false,
     class_name: "quicksettings-window",
     child: Widget.Box({
       class_name: "quicksettings",

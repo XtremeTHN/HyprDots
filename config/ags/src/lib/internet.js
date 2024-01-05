@@ -33,10 +33,21 @@ Network.connect("changed", (nt) => {
 */
 const ConnectToWifi = async (ssid, password) => {
   let out = await execAsync(["bash", "-c", [`nmcli dev wifi connect "${ssid}" password "${password}" && echo $?`]])
-  switch out {
 
-    return "Wrong password"
-  }
+  return new Promise((resolve, reject) => {
+    switch (out) {
+      case 'Error: Connection activation failed: Secrets were required, but not provided.':
+        reject("Wrong password")
+        break
+      case `Error: No network with SSID '${ssid}' found.`:
+        reject("Connection eror. Wifi not found")
+        break
+      default:
+        resolve("")
+        break
+    }
+  })
+  
 
 }
 
@@ -91,26 +102,23 @@ const WifiItem = (wifi) => {
   let btt =  Widget.Button({
     class_name: "quicksettings-wifi-item",
     setup: self => {
-      self.hook(Network.wifi, btt => {
-        
+      self.child = Widget.Box({
+        children: [
+          Widget.Box({
+            spacing: 5,
+            children: [
+              Widget.Icon(wifi.iconName),
+              Widget.Label({
+                label: wifi.ssid,
+                xalign: 0,
+                hexpand: true,
+              }),
+              Widget.Label(wifi.active ? "Connected" : "")
+            ]
+          })
+        ]
       })
     },
-    child: Widget.Box({
-      children: [
-        Widget.Box({
-          spacing: 5,
-          children: [
-            Widget.Icon(wifi.iconName),
-            Widget.Label({
-              label: wifi.ssid,
-              xalign: 0,
-              hexpand: true,
-            }),
-            Widget.Label(wifi.active ? "Connected" : "")
-          ]
-        })
-      ]
-    })
   })
 
   return btt
