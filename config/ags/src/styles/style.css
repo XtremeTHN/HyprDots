@@ -5,7 +5,7 @@
 .topbar-main-box {
   border-radius: 6px;
   padding: 10px;
-  background-color: #000003;
+  background-color: rgba(0, 0, 3, 0.5);
 }
 
 .topbar-workspaces-button-circle {
@@ -26,8 +26,8 @@
 .quicksettings {
   border-radius: 6px;
   padding: 10px;
-  background-color: #000003;
-  min-width: 300px;
+  background-color: rgba(0, 0, 3, 0.5);
+  min-width: 400px;
   border-radius: 16px;
 }
 
@@ -111,7 +111,12 @@ window#notifications box.notifications {
   border-radius: 11px;
   padding: 1em;
   margin: 0.5em;
-  background-color: rgba(0, 0, 3, 0.7);
+  background-color: rgba(0, 0, 3, 0.4);
+}
+
+.notification-window {
+  border-radius: 16px;
+  background-color: transparent;
 }
 
 .notification.critical {

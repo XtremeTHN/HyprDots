@@ -3,5 +3,5 @@
 @mixin box {
   border-radius: 6px;
   padding: 10px;
-  background-color: $background;
+  background-color: rgba($background, .5);
 }

@@ -32,7 +32,12 @@ window#notifications box.notifications {
     border-radius: 11px;
     padding: 1em;
     margin: .5em;
-    background-color: rgba($background, .7);
+    background-color: rgba($background, .4);
+}
+
+.notification-window {
+  border-radius: 16px;
+  background-color: transparent;
 }
 
 .notification.critical {

@@ -1,9 +1,10 @@
 @import '../../pywal/colors.scss';
 @import '../../common/box.scss';
+@import './audio.scss';
 
 .quicksettings {
   @include box();
-  min-width: 300px;
+  min-width: 400px;
   border-radius: 16px;
 }
 

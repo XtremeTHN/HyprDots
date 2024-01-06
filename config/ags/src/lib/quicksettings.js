@@ -4,6 +4,8 @@ import ControlCenter from "./controlcenter.js";
 import { execAsync } from "resource:///com/github/Aylur/ags/utils.js";
 import { WifiScanner } from "./internet.js";
 import { BluetoothScanner } from "./bluetooth.js";
+import { AudioMixer } from "./audio.js";
+
 
 /**
  * @param {String} string
@@ -12,6 +14,10 @@ import { BluetoothScanner } from "./bluetooth.js";
 
 const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) => {
   let ovr_child = []
+  let childs = [
+
+  ]
+
   if (target !== "") {
     console.log("target not null")
     ovr_child.push(Widget.Button({
@@ -28,6 +34,7 @@ const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) =>
       })
     )
   }
+
   return Widget.Overlay({
     child: Widget.Button({
       class_name: "quicksettings-button",
@@ -38,10 +45,15 @@ const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) =>
             size: icon_size,
             icon
           }),
-          Widget.Label({
-            xalign: 0,
-            label,
-            hexpand: true,
+          Widget.Box({
+            children: [
+              Widget.Label({
+                xalign: 0,
+                label,
+                vpack: 'center',
+                hexpand: true,
+              })
+            ]
           })
         ]
       })
@@ -104,6 +116,7 @@ const QuickSettingsTop = () => Widget.Box({
   *
 **/
 const QuickSettingsMainBox = (stack) => Widget.Box({
+  spacing: 10,
   children: [
     Widget.Box({
       vertical: true,
@@ -116,9 +129,21 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
         }),
         QuickSettingsButton({
           stack,
+          icon: "audio-volume-high-symbolic",
+          label: "Audio mixer", target: "AudioMixer"
+        })
+
+      ]
+    }),
+    Widget.Box({
+      vertical: true,
+      spacing: 10,
+      children: [
+        QuickSettingsButton({
+          stack,
           icon: "bluetooth-active-symbolic",
           label: "Bluetooth", target: "BluetoothScanner"
-        })
+        }),
       ]
     })
   ]
@@ -178,6 +203,18 @@ const QuickSettingsBluetoothScanner = (stack) => Widget.Box({
   ]
 })
 
+const QuickSettingsAudioMixer = (stack) => Widget.Box({
+  vertical: true,
+  spacing: 20,
+  hexpand: true,
+  children: [
+    QuickSettingsSectionTop(stack),
+    AudioMixer(stack)
+  ]
+})
+
+
+
 export default () => {
    return Widget.Window({
     name: "quicksettings",
@@ -196,7 +233,8 @@ export default () => {
             self.items = [
               ["Main", QuickSettingsMainBox(self)],
               ["WifiScanner", QuickSettingsWifiScanner(self)],
-              ["BluetoothScanner", QuickSettingsBluetoothScanner(self)]
+              ["BluetoothScanner", QuickSettingsBluetoothScanner(self)],
+              ["AudioMixer", QuickSettingsAudioMixer(self)],
             ]
           }
         })

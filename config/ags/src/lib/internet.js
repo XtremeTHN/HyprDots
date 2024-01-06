@@ -141,7 +141,6 @@ export const WifiScanner = (stack) => {
           vertical: true,
           connections: [
             [_wifi, self => {
-              console.log("mapping wifi")
               self.children = _wifi.value.map(WifiItem)
             }], 
           ] 
