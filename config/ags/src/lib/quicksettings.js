@@ -2,21 +2,29 @@ import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { User, Uptime } from "./variables.js";
 import ControlCenter from "./controlcenter.js";
 import { execAsync } from "resource:///com/github/Aylur/ags/utils.js";
-import { WifiScanner } from "./internet.js";
-import { BluetoothScanner } from "./bluetooth.js";
+import { CurrentConnectedWifi, NetworkToggled, WifiScanner } from "./internet.js";
+import { BluetoothScanner, IsBluetoothEnabled } from "./bluetooth.js";
 import { AudioMixer } from "./audio.js";
+import { Performance, CurrentPowerMode, IsPowerProfilesAvailable } from "./profiles.js";
 
-
-/**
- * @param {String} string
- *
-**/ 
-
-const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) => {
+const QuickSettingsButton = ({ stack, active, icon, label, subtitle="", target="", icon_size=16 }) => {
   let ovr_child = []
   let childs = [
-
+    Widget.Label({
+      xalign: 0,
+      label,
+      css: "font-weight: 600;",
+      hexpand: true,
+    })
   ]
+
+  if (subtitle !== "") {
+    childs.push(Widget.Label({
+      label: subtitle,
+      css: "font-size: x-small;",
+      xalign: 0,
+    }))
+  }
 
   if (target !== "") {
     console.log("target not null")
@@ -34,9 +42,8 @@ const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) =>
       })
     )
   }
-
-  return Widget.Overlay({
-    child: Widget.Button({
+  
+  let button = Widget.Button({
       class_name: "quicksettings-button",
       child: Widget.Box({
         spacing: 10,
@@ -46,18 +53,23 @@ const QuickSettingsButton = ({ stack, icon, label, target="", icon_size=16 }) =>
             icon
           }),
           Widget.Box({
-            children: [
-              Widget.Label({
-                xalign: 0,
-                label,
-                vpack: 'center',
-                hexpand: true,
-              })
-            ]
+            vertical: subtitle !== "",
+            vpack: 'center',
+            spacing: 0,
+            children: childs 
           })
         ]
       })
-    }),
+  })
+  
+  if (active !== undefined) {
+    button.hook(active, self => {
+      self.toggleClassName("active", active.value)
+    })
+  }
+
+  return Widget.Overlay({
+    child: button,
     overlays: ovr_child
   })
 }
@@ -71,13 +83,9 @@ const QuickSettingsTop = () => Widget.Box({
   spacing: 10,
   children: [
     Widget.Icon({
-          connections: [
-            [ControlCenter.config.userPhoto, self => {
-              self.icon = ControlCenter.config.userPhoto.value
-            }]
-          ],
-          size: 32,
-        }),
+      icon: ControlCenter.config.userPhoto.bind('value'),
+      size: 32,
+    }),
     Widget.Box({
       vertical: true,
       spacing: 0,
@@ -90,11 +98,7 @@ const QuickSettingsTop = () => Widget.Box({
         Widget.Label({
           class_name: "quicksettings-uptime",
           xalign: 0,
-          connections: [
-            [Uptime, self => {
-              self.label = Uptime.value
-            }]
-          ]
+          label: Uptime.bind('value') 
         })
       ]
     }),
@@ -107,8 +111,7 @@ const QuickSettingsTop = () => Widget.Box({
       on_primary_click: () => {
         execAsync(['shutdown', 'now'])
       }
-    })
-    
+    }) 
   ]
 })
 
@@ -123,16 +126,16 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
       spacing: 10,
       children: [
         QuickSettingsButton({
-          stack,
+          stack, active: NetworkToggled, 
           icon: "network-wireless-symbolic",
-          label: "Internet", target: "WifiScanner"
+          label: "Internet", subtitle: CurrentConnectedWifi, 
+          target: "WifiScanner"
         }),
         QuickSettingsButton({
           stack,
           icon: "audio-volume-high-symbolic",
           label: "Audio mixer", target: "AudioMixer"
         })
-
       ]
     }),
     Widget.Box({
@@ -140,10 +143,16 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
       spacing: 10,
       children: [
         QuickSettingsButton({
-          stack,
+          stack, active: IsBluetoothEnabled, 
           icon: "bluetooth-active-symbolic",
           label: "Bluetooth", target: "BluetoothScanner"
         }),
+        QuickSettingsButton({
+          stack, active: IsPowerProfilesAvailable,
+          icon: "power-profile-balanced-symbolic",
+          label: "Power Mode", subtitle: CurrentPowerMode,
+          target: "PowerProfiles"
+        })
       ]
     })
   ]
@@ -173,17 +182,15 @@ const QuickSettingsSectionTop = (stack) => Widget.Box({
 })
 
 export const QuickSettingsStackMenu = (stack, name, child) => Widget.Revealer({
-    reveal_child: false,
-    transition: "slide_up",
-    transition_duration: 350,
-    child,
-    connections: [
-      [stack, self => {
-        let show = stack.shown === name
-        self.reveal_child = show
-      }, 'notify::shown']
-    ]
-  })
+  reveal_child: false,
+  transition: "slide_up",
+  transition_duration: 350,
+  child
+}).hook(stack, self => {
+  let show = stack.shown === name
+  self.reveal_child = show
+}, 'notify::shown')
+
 
 const QuickSettingsWifiScanner = (stack) => Widget.Box({
   vertical: true,
@@ -213,6 +220,15 @@ const QuickSettingsAudioMixer = (stack) => Widget.Box({
   ]
 })
 
+const QuickSettingsPowerProfiles = (stack) => Widget.Box({
+  vertical: true,
+  spacing: 20,
+  hexpand: true,
+  children: [
+    QuickSettingsSectionTop(stack),
+    Performance(stack)
+  ]
+})
 
 
 export default () => {
@@ -235,6 +251,7 @@ export default () => {
               ["WifiScanner", QuickSettingsWifiScanner(self)],
               ["BluetoothScanner", QuickSettingsBluetoothScanner(self)],
               ["AudioMixer", QuickSettingsAudioMixer(self)],
+              ["PowerProfiles", QuickSettingsPowerProfiles(self)]
             ]
           }
         })

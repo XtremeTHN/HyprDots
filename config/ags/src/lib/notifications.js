@@ -1,6 +1,7 @@
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { lookUpIcon } from 'resource:///com/github/Aylur/ags/utils.js';
+import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 
 /** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
 const NotificationIcon = ({ app_entry, app_icon, image }) => {
@@ -89,7 +90,19 @@ export const Notification = n => {
     });
 };
 
-export const notificationPopup = Widget.Window({
+export const SendNotification = (title, msg) => {
+  execAsync(['notify-send', title, msg])
+}
+
+export const SendNotificationWithActions = (title, msg, ...actions) => {
+  let cmd = ['notify-send', title, msg]
+  for (const action of actions) {
+    cmd.push(...['-A',action])
+  }
+  return execAsync(cmd)
+}
+
+export const NotificationPopupWindow = Widget.Window({
     name: 'notifications',
     anchor: ['top', 'right'],
     child: Widget.Box({

@@ -4,7 +4,7 @@
 
 .quicksettings {
   @include box();
-  min-width: 400px;
+  min-width: 350px;
   border-radius: 16px;
 }
 
@@ -26,13 +26,15 @@
 }
 
 .quicksettings-button {
+  &.active {
+    background-color: $color1;
+  }
   min-height: 40px;
   border-radius: 16px;
 }
 
 .quicksettings-scanners-box {
   padding: 15px;
-  border: 1px solid $color7;
   border-radius: 16px;
 }
 
@@ -52,6 +54,10 @@
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-left: 1px solid $foreground;
+}
+
+.quicksettings-powerprofiles-item {
+  @include SecondaryButton
 }
 
 .quicksettings-window {

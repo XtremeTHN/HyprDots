@@ -19,30 +19,28 @@ const _audio_icon = () => {
 
 export const AudioIcon = (className="") => Widget.Icon({
   size: 16,
-  className,
-  connections: [
-    [Audio, self => {
-        if (!Audio.speaker)
-          return;
+  className 
+}).hook(Audio, self => {
+    if (!Audio.speaker)
+      return;
 
-        const vol = Audio.speaker?.volume * 100;
+    const vol = Audio.speaker?.volume * 100;
 
-        self.icon = _audio_icon()
+    self.icon = _audio_icon()
         
-        self.tooltip_text = `Volume ${Math.floor(vol)}%`;
+    self.tooltip_text = `Volume ${Math.floor(vol)}%`;
 
-    }]
-  ]
 })
 
 /** @param {import('resource:///com/github/Aylur/ags/service/audio.js').Stream} stream*/
 const AudioMixerItem = (stream) => Widget.Box({
   class_name: "quicksettings-audio-mixer-item",
+  spacing: 10,
   children: [
     Widget.Icon({
       icon: stream.icon_name,
       vpack: 'center',
-      size: 64,
+      size: 52,
     }),
     Widget.Box({
       vertical: true,
@@ -57,27 +55,15 @@ const AudioMixerItem = (stream) => Widget.Box({
           draw_value: false,
           on_change: ({ value }) => {
             stream.volume = value
-          },
-          connections: [
-            [stream, (self) => {
-              self.value = stream.volume
-            }, 'notify::volume'],
-          ]
-        })
+          }, 
+        }).hook(stream, self => {
+          self.value = stream.volume
+        }, 'notify::volume')
       ]
-    }),
-    Widget.Label({
-      binds: [
-        ['label', stream, 'volume']
-      ]
-    })
+    }) 
   ]
 })
 
 export const AudioMixer = (stack) => QuickSettingsStackMenu(stack, "AudioMixer", Widget.Box({
-  connections: [
-    [Audio, self => {
-      self.children = Audio.apps.map(AudioMixerItem)
-    }]
-  ]
+  children: Audio.bind('apps').transform(v => v.map(AudioMixerItem)) 
 }))

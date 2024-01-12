@@ -1,5 +1,9 @@
 @import '../pywal/colors.scss';
 
+@mixin SecondaryButton {
+  background-color: transparent;
+}
+
 @mixin box {
   border-radius: 6px;
   padding: 10px;

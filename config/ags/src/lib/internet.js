@@ -10,7 +10,7 @@ Network.connect("changed", (self) => {
   _network_ico.value = self[self.primary].icon_name
 })
 
-const WifiDeviceIsAvailable = Variable(false)
+export const WifiDeviceIsAvailable = Variable(false)
 
 const GetAccessPoints = (self=Network) => {
   try {
@@ -64,33 +64,27 @@ const QuickSettingsWifiScannerPlaceholder = () => {
     children: [
       ico,
       label
-    ],
-    connections: [
-      [Network.wifi, self => {
-        if (WifiDeviceIsAvailable.value) {
-          if (_wifi.value.length === 0) {
-            self.visible = true
-            label.label = "No wifi devices nearby"
-            ico.icon = "network-wireless-no-route-symbolic"
-          } else {
-            self.visible = false
-          }
-        } else {
+    ] 
+  }).hook(Network.wifi, self => {
+      if (WifiDeviceIsAvailable.value) {
+        if (_wifi.value.length === 0) {
           self.visible = true
-          label.label = "No wifi adapter available"
-          ico.icon = "network-wireless-offline-symbolic"
+          label.label = "No wifi devices nearby"
+          ico.icon = "network-wireless-no-route-symbolic"
+        } else {
+          self.visible = false
         }
-      }]
-    ]
-  })
+      } else {
+        self.visible = true
+        label.label = "No wifi adapter available"
+        ico.icon = "network-wireless-offline-symbolic"
+      }
+    }
+  )
 }
 
-export const NetworkIcon = () => Widget.Icon({
-  connections: [
-    [_network_ico, (self) => {
-      self.icon = _network_ico.value
-    }]
-  ],
+export const NetworkIcon = () => Widget.Icon({ 
+  icon: _network_ico.bind('value'),
   size: 16,
 })
 
@@ -124,6 +118,16 @@ const WifiItem = (wifi) => {
   return btt
 } 
 
+export const CurrentConnectedWifi = Network.primary === "wifi" ? Network.wifi.bind('ssid') : Network.wired.bind('internet')
+
+export const NetworkToggled = Variable(true)
+Network.connect('changed', netw => {
+  if (WifiDeviceIsAvailable) {
+    NetworkToggled.value = Network.wifi.enabled  
+  } else {
+    NetworkToggled.value = Network.wired.internet !== 'disconnected'
+  }
+})
 
 export const WifiScanner = (stack) => {
   /*if (_wifi.value.length !> 0) {
@@ -132,20 +136,16 @@ export const WifiScanner = (stack) => {
     })
   }*/
   return QuickSettingsStackMenu(stack, "WifiScanner", Widget.Box({
-      vertical: true,
-      class_name: "quicksettings-scanners-box",
-      children: [
-        QuickSettingsWifiScannerPlaceholder(),
-        Widget.Box({
-          spacing: 5,
-          vertical: true,
-          connections: [
-            [_wifi, self => {
-              self.children = _wifi.value.map(WifiItem)
-            }], 
-          ] 
-        })
-      ]
-    })) 
+    vertical: true,
+    class_name: "quicksettings-scanners-box",
+    children: [
+      QuickSettingsWifiScannerPlaceholder(),
+      Widget.Box({
+        spacing: 5,
+        vertical: true,
+        children: _wifi.bind('value').transform(w => w.map(WifiItem))           
+      })
+    ]
+  })) 
 }
 

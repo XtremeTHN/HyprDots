@@ -2,10 +2,11 @@ import App from 'resource:///com/github/Aylur/ags/app.js';
 import TopBarWindow from './src/lib/topbar.js'; 
 import QuickSettingsWindow from './src/lib/quicksettings.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-import { notificationPopup } from './src/lib/notifications.js';
-import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
+import { NotificationPopupWindow } from './src/lib/notifications.js';
 
-globalThis['Notifications'] = Notifications
+import PowerProfiles from 'resource:///com/github/Aylur/ags/service/powerprofiles.js';
+
+globalThis['PowerProfiles'] = PowerProfiles
 
 const css_path = `${App.configDir}/src/styles/style.css`
 
@@ -25,7 +26,7 @@ export default {
   windows: [
     TopBarWindow(),
     QuickSettingsWindow(),
-    notificationPopup
+    NotificationPopupWindow
   ],
   notificationPopupTimeout: 5000
 }

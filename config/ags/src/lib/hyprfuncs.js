@@ -12,15 +12,12 @@ export const Workspaces = (obj) => Widget.Box({
     child: Widget.Box({
       class_name: "topbar-workspaces-button-circle",
     })
-  })),
-  connections: [
-    [Hyprland, self => self.children.forEach(btn => {
-            const workspaces = Hyprland.workspaces;
-            const current_ws = Hyprland.active.workspace.id;
-            // @ts-ignore
-            btn.visible = workspaces.some(ws => ws.id === btn.id);
-            // @ts-ignore
-            btn.child.toggleClassName('active', current_ws === btn.id);
-    })],
-  ]
-})
+  })) 
+}).hook(Hyprland, self => self.children.forEach(btn => {
+    const workspaces = Hyprland.workspaces;
+    const current_ws = Hyprland.active.workspace.id;
+    // @ts-ignore
+    btn.visible = workspaces.some(ws => ws.id === btn.id);
+    // @ts-ignore
+    btn.child.toggleClassName('active', current_ws === btn.id);
+  }))

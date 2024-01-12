@@ -20,11 +20,8 @@ const truncateWindowName = (wmName, maxLength=32) => {
 
 const WindowName = () => Widget.Label({
   class_name: "topbar-active-window",
-  connections: [
-    [Hyprland, self => {
-      self.label = truncateWindowName(Hyprland.active.client.title.length === 0 ? `Workspace ${Hyprland.active.workspace.id}` : Hyprland.active.client.title)
-    }]
-  ]
+}).hook(Hyprland, self => {
+    self.label = truncateWindowName(Hyprland.active.client.title.length === 0 ? `Workspace ${Hyprland.active.workspace.id}` : Hyprland.active.client.title)
 })
 
 const TopBarContentLeft = () => Widget.Box({
@@ -48,9 +45,7 @@ const TopBarContentRight = () => Widget.Box({
   children: [
     Widget.Box({hexpand:true}),
     Widget.Label({
-      binds: [
-        ['label', Time, 'value']
-      ]
+      label: Time.bind('value') 
     }),
     Widget.Box({
       spacing: 5,
