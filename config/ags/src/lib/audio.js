@@ -64,6 +64,14 @@ const AudioMixerItem = (stream) => Widget.Box({
   ]
 })
 
+export const IncrementVolume = () => {
+  Audio.speaker.volume += 0.10
+}
+
+export const DecreaseVolume = () => {
+  Audio.speaker.volume -= 0.10
+}
+
 export const AudioMixer = (stack) => QuickSettingsStackMenu(stack, "AudioMixer", Widget.Box({
   children: Audio.bind('apps').transform(v => v.map(AudioMixerItem)) 
 }))
