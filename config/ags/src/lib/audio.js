@@ -1,6 +1,8 @@
 import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { QuickSettingsStackMenu } from "./quicksettings.js";
+import Variable from "resource:///com/github/Aylur/ags/variable.js";
+import { interval } from "resource:///com/github/Aylur/ags/utils.js";
 
 const _audio_icon = () => {
     const vol = Audio.speaker?.volume * 100;
@@ -30,6 +32,21 @@ export const AudioIcon = (className="") => Widget.Icon({
         
     self.tooltip_text = `Volume ${Math.floor(vol)}%`;
 
+})
+
+export const AudioIsEnabled = Variable(false)
+interval(1000, () => {
+  AudioIsEnabled.value = Audio.speaker?.volume > 0
+  Audio.speaker?.connect('notify::volume', () => {
+    AudioIsEnabled.value = Audio.speaker?.volume > 0
+  })
+})
+
+const DEFAULT_MIXER_COUNT="No mixers"
+export const AudioMixersCount = Variable(DEFAULT_MIXER_COUNT)
+Audio.connect('notify', () => {
+  console.log(Audio.apps.length)
+  AudioMixersCount.value = `${Audio.apps.length} mixers`
 })
 
 /** @param {import('resource:///com/github/Aylur/ags/service/audio.js').Stream} stream*/
@@ -73,5 +90,6 @@ export const DecreaseVolume = () => {
 }
 
 export const AudioMixer = (stack) => QuickSettingsStackMenu(stack, "AudioMixer", Widget.Box({
+  vertical: true,
   children: Audio.bind('apps').transform(v => v.map(AudioMixerItem)) 
 }))

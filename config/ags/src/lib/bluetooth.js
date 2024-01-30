@@ -31,7 +31,7 @@ const QuickSettingsBluetoothScannerPlaceholder = () => {
     ] 
   }).hook(Bluetooth, self => {
     if (Bluetooth.enabled) {
-      if (Bluetooth.devices.length) {
+      if (Bluetooth.devices.length < 1) {
         self.visible = true
         label.label = "No bluetooth devices nearby"
         ico.icon = "bluetooth-disabled-symbolic"
@@ -98,6 +98,7 @@ export const BluetoothScanner = (stack) => QuickSettingsStackMenu(stack, "Blueto
     QuickSettingsBluetoothScannerPlaceholder(),
     Widget.Box({
       spacing: 5,
+      vertical: true,
       children: Bluetooth.bind('devices').transform(d => d.map(BluetoothDevice))
     })
   ]
