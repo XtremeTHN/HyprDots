@@ -1,3 +1,18 @@
 @import '../../pywal/colors.scss';
+@import '../../common/box.scss';
 
+.quicksettings-global-volume-mixer {
+    @include box;
 
+    background-color: mix($foreground, $background, 10%);
+}
+
+.quicksettings-global-volume-mixer-label {
+    font-size: small;
+    font-weight: bold;
+}
+
+.quicksettings-global-volume-mixer-slider trough progress {
+    background-image: none;
+    background-color: $color7;
+}

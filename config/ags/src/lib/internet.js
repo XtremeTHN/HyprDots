@@ -6,8 +6,10 @@ import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { QuickSettingsStackMenu } from './quicksettings.js';
 
 const _network_ico = Variable(Network[Network.primary]?.icon_name, {})
+const _network_ssid = Variable(Network.primary === "wifi" ? Network.wifi.ssid : Network.wired.internet)
 Network.connect("changed", (self) => {
   _network_ico.value = self[self.primary].icon_name
+  _network_ssid.value = self.primary === "wifi" ? self.wifi.ssid : self.wired.internet
 })
 
 export const WifiDeviceIsAvailable = Variable(false)
@@ -85,6 +87,7 @@ const QuickSettingsWifiScannerPlaceholder = () => {
 
 export const NetworkIcon = () => Widget.Icon({ 
   icon: _network_ico.bind('value'),
+  tooltip_text: _network_ssid.bind('value'),
   size: 16,
 })
 

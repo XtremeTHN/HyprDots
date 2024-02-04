@@ -4,7 +4,7 @@ import ControlCenter from "./controlcenter.js";
 import { execAsync } from "resource:///com/github/Aylur/ags/utils.js";
 import { CurrentConnectedWifi, NetworkToggled, WifiScanner } from "./internet.js";
 import { BluetoothScanner, IsBluetoothEnabled } from "./bluetooth.js";
-import { AudioMixer, AudioIsEnabled, AudioMixersCount } from "./audio.js";
+import { GlobalVolumeMixer, AudioMixer, AudioIsEnabled, AudioMixersCount } from "./audio.js";
 import { Performance, CurrentPowerMode, IsPowerProfilesAvailable } from "./profiles.js";
 import { Logger } from "./log.js";
 
@@ -267,7 +267,8 @@ export default () => {
               ["PowerProfiles", QuickSettingsPowerProfiles(self)]
             ]
           }
-        })
+        }),
+        GlobalVolumeMixer()
       ]
     }),
     anchor: ["top", "right"],

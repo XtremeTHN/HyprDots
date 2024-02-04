@@ -4,7 +4,6 @@ import QuickSettingsWindow from './src/lib/quicksettings.js';
 import { NotificationPopupWindow } from './src/lib/notifications.js';
 import { IncrementVolume, DecreaseVolume } from './src/lib/audio.js';
 
-import PowerProfiles from 'resource:///com/github/Aylur/ags/service/powerprofiles.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
 globalThis['IncrementVolume'] = IncrementVolume

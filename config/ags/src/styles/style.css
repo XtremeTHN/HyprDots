@@ -23,6 +23,23 @@
   padding-right: 7px;
 }
 
+.quicksettings-global-volume-mixer {
+  border-radius: 6px;
+  padding: 10px;
+  background-color: rgba(2, 1, 18, 0.5);
+  background-color: #121228;
+}
+
+.quicksettings-global-volume-mixer-label {
+  font-size: small;
+  font-weight: bold;
+}
+
+.quicksettings-global-volume-mixer-slider trough progress {
+  background-image: none;
+  background-color: #a1a6eb;
+}
+
 .quicksettings {
   border-radius: 6px;
   padding: 10px;

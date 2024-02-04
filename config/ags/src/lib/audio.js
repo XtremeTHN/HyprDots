@@ -92,3 +92,51 @@ export const AudioMixer = (stack) => QuickSettingsStackMenu(stack, "AudioMixer",
   vertical: true,
   children: Audio.bind('apps').transform(v => v.map(AudioMixerItem)) 
 }))
+
+export const GlobalVolumeMixer = () => Widget.Box({
+  vertical: true,
+  class_name: 'quicksettings-global-volume-mixer',
+  // css: 'background-color: @theme_bg_color',
+  children: [
+    Widget.Box({
+      vertical: true,
+      children: [
+        Widget.Label({
+          label: 'Volume',
+          class_name: 'quicksettings-global-volume-mixer-label',
+          xalign: 0,
+        }),
+        Widget.Slider({
+          draw_value: false,
+          class_name: "quicksettings-global-volume-mixer-slider",
+          hexpand: true,
+          on_change: ({ value }) => {
+            Audio.speaker.volume = value
+          }
+        }).hook(Audio.speaker, (self) => {
+          self.value = Audio.speaker?.volume
+        }, 'notify::volume')
+      ]
+    }),
+    Widget.Box({
+      vertical: true,
+      children: [
+        Widget.Label({
+          label: 'Microphone',
+          class_name: 'quicksettings-global-volume-mixer-label',
+          xalign: 0,
+        }),
+        Widget.Slider({
+          draw_value: false,
+          class_name: "quicksettings-global-volume-mixer-slider",
+          hexpand: true,
+          on_change: ({ value }) => {
+            Audio.microphone.volume = value
+          }
+        }).hook(Audio.microphone, (self) => {
+          self.value = Audio.microphone.volume
+        }, 'notify::volume')
+      ]
+    })
+  ]
+})

@@ -5,6 +5,7 @@ import { Time } from './variables.js';
 import { AudioIcon } from './audio.js';
 import { NetworkIcon } from './internet.js';
 import { BluetoothIcon } from './bluetooth.js';
+import { BatteryIcon } from './battery.js';
 
 /**
  * @param {String} wmName
@@ -50,6 +51,7 @@ const TopBarContentRight = () => Widget.Box({
     Widget.Box({
       spacing: 5,
       children: [
+        BatteryIcon(),
         AudioIcon(),
         NetworkIcon(),
         BluetoothIcon()
