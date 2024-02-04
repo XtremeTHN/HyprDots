@@ -6,9 +6,20 @@ import { CurrentConnectedWifi, NetworkToggled, WifiScanner } from "./internet.js
 import { BluetoothScanner, IsBluetoothEnabled } from "./bluetooth.js";
 import { AudioMixer, AudioIsEnabled, AudioMixersCount } from "./audio.js";
 import { Performance, CurrentPowerMode, IsPowerProfilesAvailable } from "./profiles.js";
+import { Logger } from "./log.js";
 
-const QuickSettingsButton = ({ stack, active, icon, label, subtitle="", target="", icon_size=16 }) => {
+import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
+import Network from "resource:///com/github/Aylur/ags/service/network.js";
+
+const QuickSettingsButton = ({ stack, active, icon, cb, label, subtitle="", target="", icon_size=16 }) => {
+  let logger = new Logger("QuickSettingsButton", target)
+
   let ovr_child = []
+  if (cb == undefined) {
+    cb = () => {
+      logger.log("Dummy callback")
+    }
+  }
   let childs = [
     Widget.Label({
       xalign: 0,
@@ -27,14 +38,14 @@ const QuickSettingsButton = ({ stack, active, icon, label, subtitle="", target="
   }
 
   if (target !== "") {
-    console.log("target not null")
+    logger.log("target not null")
     ovr_child.push(Widget.Button({
         class_name: "quicksettings-button-right",
         hpack: 'end',
         hexpand: false,
         on_primary_click: () => {
           stack.shown = target
-          console.log(`showing ${target}`)
+          logger.log(`showing self`)
         },
         child: Widget.Icon({
           icon: "go-next-symbolic"
@@ -45,6 +56,7 @@ const QuickSettingsButton = ({ stack, active, icon, label, subtitle="", target="
   
   let button = Widget.Button({
       class_name: "quicksettings-button",
+      on_primary_click: cb,
       child: Widget.Box({
         spacing: 10,
         children: [
@@ -126,7 +138,7 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
       spacing: 10,
       children: [
         QuickSettingsButton({
-          stack, active: NetworkToggled, 
+          stack, active: NetworkToggled, cb: Network.toggleWifi,
           icon: "network-wireless-symbolic",
           label: "Internet", subtitle: CurrentConnectedWifi, 
           target: "WifiScanner"
@@ -144,7 +156,7 @@ const QuickSettingsMainBox = (stack) => Widget.Box({
       spacing: 10,
       children: [
         QuickSettingsButton({
-          stack, active: IsBluetoothEnabled, 
+          stack, active: IsBluetoothEnabled, cb: Bluetooth.toggle, 
           icon: "bluetooth-active-symbolic",
           label: "Bluetooth", target: "BluetoothScanner"
         }),

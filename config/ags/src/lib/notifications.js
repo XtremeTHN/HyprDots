@@ -3,6 +3,32 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { lookUpIcon } from 'resource:///com/github/Aylur/ags/utils.js';
 import { execAsync } from 'resource:///com/github/Aylur/ags/utils.js';
 
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
+import GLib from 'gi://GLib';
+// import AgsCircularProgress from 'types/widgets/circularprogress';
+
+/**
+ * 
+ * @param {Number} maxTime
+ * @param {*} progress 
+ */
+const updateCircularProgressByTime = (maxTime, progress) => {
+    let currentTime = 0 // milisegundos
+    let interval = setInterval(() => {
+        let currentValue = progress.value // valor fraccional actual de la barra
+
+        let newValue = currentTime / maxTime
+        currentTime += 50
+
+        progress.value = newValue
+
+        if (currentValue >= 1.0) {
+            interval.destroy()
+        }
+    }, 48)
+
+}
+
 /** @param {import('resource:///com/github/Aylur/ags/service/notifications.js').Notification} n */
 const NotificationIcon = ({ app_entry, app_icon, image }) => {
     if (image) {
@@ -34,17 +60,35 @@ export const Notification = n => {
         child: NotificationIcon(n),
     });
 
-    const title = Widget.Label({
-        class_name: 'title',
-        xalign: 0,
-        justification: 'left',
-        hexpand: true,
-        max_width_chars: 24,
-        truncate: 'end',
-        wrap: true,
-        label: n.summary,
-        use_markup: true,
-    });
+    const title = Widget.Box({
+        children: [
+            Widget.Label({
+                class_name: 'title',
+                xalign: 0,
+                hexpand: true,
+                justification: 'left',
+                max_width_chars: 24,
+                truncate: 'end',
+                wrap: true,
+                label: n.summary,
+                use_markup: true,
+            }),
+            Widget.CircularProgress({
+                class_name: "notification-time-progress",
+                rounded: true,
+                vexpand: false,
+                child: Widget.Button({
+                    child: Widget.Icon({
+                        icon: "window-close-symbolic",
+                        size: 16,
+                    })
+                }),
+                setup: (self) => {
+                    updateCircularProgressByTime(5000, self)
+                }
+            })
+        ]
+    })
 
     const body = Widget.Label({
         class_name: 'body',
@@ -66,28 +110,26 @@ export const Notification = n => {
         })),
     });
 
-    return Widget.EventBox({
-        on_primary_click: () => n.dismiss(),
-        child: Widget.Box({
-            class_name: `notification ${n.urgency}`,
-            vertical: true,
-            children: [
-                Widget.Box({
-                    children: [
-                        icon,
-                        Widget.Box({
-                            vertical: true,
-                            children: [
-                                title,
-                                body,
-                            ],
-                        }),
-                    ],
-                }),
-                actions,
-            ],
-        }),
-    });
+    return Widget.Box({
+        class_name: `notification ${n.urgency}`,
+        vertical: true,
+        vexpand: true,
+        children: [
+            Widget.Box({
+                children: [
+                    icon,
+                    Widget.Box({
+                        vertical: true,
+                        children: [
+                            title,
+                            body,
+                        ],
+                    }),
+                ],
+            }),
+            actions,
+        ],
+    })
 };
 
 export const SendNotification = (title, msg) => {
@@ -113,3 +155,5 @@ export const NotificationPopupWindow = Widget.Window({
         }),
     }),
 });
+
+Notifications.popupTimeout = 5000

@@ -36,17 +36,16 @@ export const AudioIcon = (className="") => Widget.Icon({
 
 export const AudioIsEnabled = Variable(false)
 interval(1000, () => {
-  AudioIsEnabled.value = Audio.speaker?.volume > 0
-  Audio.speaker?.connect('notify::volume', () => {
-    AudioIsEnabled.value = Audio.speaker?.volume > 0
+  AudioIsEnabled.value = Audio.apps.length > 0
+  Audio.connect('notify::apps', () => {
+    AudioIsEnabled.value = Audio.apps.length > 0
   })
 })
 
 const DEFAULT_MIXER_COUNT="No mixers"
 export const AudioMixersCount = Variable(DEFAULT_MIXER_COUNT)
 Audio.connect('notify', () => {
-  console.log(Audio.apps.length)
-  AudioMixersCount.value = `${Audio.apps.length} mixers`
+  AudioMixersCount.value = `${Audio.apps.length > 0 ? Audio.apps.length : "No"} mixers`
 })
 
 /** @param {import('resource:///com/github/Aylur/ags/service/audio.js').Stream} stream*/

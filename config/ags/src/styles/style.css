@@ -151,6 +151,10 @@ window#notifications box.notifications {
   margin-right: 0;
 }
 
+.notification-time-progress {
+  font-size: 5px;
+}
+
 * {
   color: #a1a6eb;
   font-family: "Chillax";
