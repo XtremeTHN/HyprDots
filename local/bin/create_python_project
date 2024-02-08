@@ -1,0 +1,13 @@
+#!/bin/bash
+
+git init .
+git branch -m main
+
+python3 -m venv .venv
+mkdir -p src/modules
+
+echo ".venv" > .gitignore
+git add .
+git commit -m "Initial commit"
+
+source .venv/bin/activate.fish

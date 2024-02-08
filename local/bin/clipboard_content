@@ -1,0 +1,18 @@
+#!/bin/fish
+
+function get_clip
+  set content (wl-paste)
+  echo '{"content": "'$content'"}'
+end
+
+set old (get_clip)
+echo $old
+
+while true
+  sleep 1
+  set new (get_clip)
+  if test "$old" != "$new"
+    echo $new
+    set old $new
+  end
+end
