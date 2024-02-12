@@ -2,9 +2,38 @@
 import sys
 import os
 
+def print_description() -> None:
+    print("""Git clone utility. It's git clone but you can write the url in this format "USER:REPO" to clone repositories from https://github.com
+""")
+
+def print_usage() -> None:
+    print("usage: clone USER:REPO GIT_ARGS")
+
+def print_args() -> None:
+    print("""Arguments:
+    USER:REPO : You need to provide the repository in this format
+
+    GIT_ARGS : This will be passed to git clone
+""")
+
+def print_help() -> None:
+    print_description()
+    print_usage()
+    print_args()
+    print("""
+Thanks for using my dots
+    - XtremeTHN
+""")
+
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
+        if sys.argv[1] == "-h":
+            print_help()
+            sys.exit(0)
+
         splited = sys.argv[1].split(":")
 
         url = f"https://github.com/{splited[0]}/{splited[1]}"
         os.system(f"git clone {url} {' '.join(sys.argv[2:])}")
+    else:
+        print_usage()
