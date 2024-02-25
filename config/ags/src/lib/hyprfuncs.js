@@ -1,12 +1,15 @@
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import Gtk from 'gi://Gtk?version=3.0';
+import App from 'resource:///com/github/Aylur/ags/app.js';
 
-export const Workspaces = (obj) => Widget.Box({
+import TopBarWindow from './topbar.js'; 
+
+export const Workspaces = () => Widget.Box({
   class_name: 'topbar-workspaces',
   spacing: 5,
   children: Array.from({ length: 10 }, (_,i) => i +1).map(i=> Widget.EventBox({
     setup: btn => {
+      // @ts-ignore
       btn.id = i
     },
     child: Widget.Box({
@@ -21,3 +24,7 @@ export const Workspaces = (obj) => Widget.Box({
     // @ts-ignore
     btn.child.toggleClassName('active', current_ws === btn.id);
   }))
+
+Hyprland.connect('monitor-added', (self) => {
+  App.addWindow(TopBarWindow(self.monitors.at(-1)?.id))
+})

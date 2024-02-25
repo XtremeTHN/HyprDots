@@ -25,9 +25,8 @@ Utils.monitorFile(`${App.configDir}/src/styles/style.css`, (file, event) => {
 export default {
   style: `${App.configDir}/src/styles/style.css`,
   windows: [
-    TopBarWindow(),
+    TopBarWindow(0),
     QuickSettingsWindow(),
     NotificationPopupWindow
   ],
-  notificationPopupTimeout: 5000
 }

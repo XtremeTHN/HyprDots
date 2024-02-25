@@ -67,8 +67,9 @@ const TopBarContent = () => Widget.CenterBox({
   end_widget: TopBarContentRight()
 })
 
-export default () => Widget.Window({
-  name: "topbar",
+export default mon => Widget.Window({
+  name: `topbar-${mon}`,
+  monitor: mon,
   class_name: "topbar-window",
   child: TopBarContent(),
   anchor: ['top', 'left', 'right'],
