@@ -49,8 +49,6 @@ const ConnectToWifi = async (ssid, password) => {
         break
     }
   })
-  
-
 }
 
 const QuickSettingsWifiScannerPlaceholder = () => {
