@@ -1,0 +1,3 @@
+[submodule "utilities/DBusQRDecoder"]
+	path = utilities/DBusQRDecoder
+	url = https://github.com/XtremeTHN/DBusQRDecoder.git

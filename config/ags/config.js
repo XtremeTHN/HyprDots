@@ -1,8 +1,9 @@
 import App from 'resource:///com/github/Aylur/ags/app.js';
-import TopBarWindow from './src/lib/topbar.js'; 
+import TopBarWindow from './src/lib/topbar.js';
 import QuickSettingsWindow from './src/lib/quicksettings.js';
 import { NotificationPopupWindow } from './src/lib/notifications.js';
 import { IncrementVolume, DecreaseVolume } from './src/lib/audio.js';
+import QRScanner from './src/lib/services/qr.js';
 
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 
@@ -22,10 +23,15 @@ Utils.monitorFile(`${App.configDir}/src/styles/style.css`, (file, event) => {
   App.applyCss(css_path)
 })
 
+/*QRScanner.start()
+QRScanner.connect("qrcode-decoded", (self, value) => {
+  console.warn(value)
+})*/
+// QRScanner.stop()
+
 export default {
   style: `${App.configDir}/src/styles/style.css`,
   windows: [
-    TopBarWindow(0),
     QuickSettingsWindow(),
     NotificationPopupWindow
   ],
