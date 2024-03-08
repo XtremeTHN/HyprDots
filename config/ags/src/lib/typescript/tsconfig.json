@@ -10,9 +10,13 @@
     "strict": true,
     "noImplicitAny": false,
     "baseUrl": ".",
+    "outDir": "../",
     "typeRoots": [
-      "./types"
+      "/home/axel/.config/ags/types"
     ],
     "skipLibCheck": true
-  } 
+  },
+  "include": {
+    "*"
+  }
 }
