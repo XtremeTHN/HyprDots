@@ -1,26 +1,8 @@
-const time = Variable('', {
-    poll: [1000, function() {
-        return Date().toString()
-    }],
-})
+import App from "resource:///com/github/Aylur/ags/app.js";
+import TopBar from "./src/widgets/topbar.js";
 
-const Bar = (/** @type {number} */ monitor) => Widget.Window({
-    monitor,
-    name: `bar${monitor}`,
-    anchor: ['top', 'left', 'right'],
-    exclusivity: 'exclusive',
-    child: Widget.CenterBox({
-        start_widget: Widget.Label({
-            hpack: 'center',
-            label: 'Welcome to AGS!',
-        }),
-        end_widget: Widget.Label({
-            hpack: 'center',
-            label: time.bind(),
-        }),
-    }),
+App.config({
+    windows: [
+        TopBar()
+    ],
 })
-
-export default {
-    windows: [Bar(0)],
-}

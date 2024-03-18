@@ -1,6 +1,6 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
-import Service from '../service.js';
+import Service from 'resource:///com/github/Aylur/ags/service.js';
 const SIS = GLib.getenv('SWAYSOCK');
 export class SwayActiveClient extends Service {
     static {
